@@ -174,6 +174,10 @@ module Sprockets
       env.gzip = config.assets.gzip if env.respond_to?(:gzip=)
     end
 
+    config.assets.configure do |env|
+      env.ignore_mtime = config.assets.ignore_mtime if env.respond_to?(:ignore_mtime=)
+    end
+
     rake_tasks do |app|
       require 'sprockets/rails/task'
       Sprockets::Rails::Task.new(app)
