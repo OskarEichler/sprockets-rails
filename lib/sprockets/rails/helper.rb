@@ -47,7 +47,7 @@ module Sprockets
           remove_method :assets_environment
           def assets_environment
             if instance_variable_defined?(:@assets_environment)
-              @assets_environment = @assets_environment.cached
+              @assets_environment = @assets_environment.cached if @assets_environment
             elsif env = self.class.assets_environment
               @assets_environment = env.cached
             else
