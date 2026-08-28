@@ -2,7 +2,7 @@ module Sprockets
   module Rails
     module RouteWrapper
       def internal_assets_path?
-        path =~ %r{\A#{self.class.assets_prefix}\z}
+        path == self.class.assets_prefix
       end
 
       def internal?

@@ -78,7 +78,7 @@ config.assets.version = 'v2'
 
 **`config.assets.prefix`**
 
-Defaults to `/assets`. Changes the directory to compile assets to.
+Defaults to `/assets`. Changes the directory to compile assets to. The mounted asset route is matched literally when filtering internal routes.
 
 **`config.assets.digest`**
 
