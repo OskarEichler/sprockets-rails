@@ -345,7 +345,7 @@ module Sprockets
 
         def find_debug_asset(path)
           if asset = find_asset(path, pipeline: :debug)
-            raise_unless_precompiled_asset asset.logical_path.sub('.debug', '')
+            raise_unless_precompiled_asset asset.logical_path.sub(/\.debug(?=\.[^.]+\z)/, '')
             asset
           end
         end

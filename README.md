@@ -86,7 +86,7 @@ When enabled, fingerprints will be added to asset filenames.
 
 **`config.assets.debug`**
 
-Enable asset debugging mode. A source map will be included with each asset when this is true.
+Enable asset debugging mode. A source map will be included with each asset when this is true. Asset names and directories may themselves contain `.debug`; only the debug pipeline suffix is removed for precompile checks.
 
 **`config.assets.compile`**
 
