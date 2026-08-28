@@ -38,7 +38,9 @@ module Sprockets
   register_dependency_resolver 'actioncontroller-asset-url-config' do |env|
     config = env.context_class.config
     [config.relative_url_root,
-    (config.asset_host unless config.asset_host.respond_to?(:call))]
+    (config.asset_host unless config.asset_host.respond_to?(:call)),
+    env.context_class.assets_prefix,
+    env.context_class.digest_assets]
   end
 
   # fallback to the default pipeline when using Sprockets 3.x
