@@ -68,7 +68,7 @@ Suppresses logger output for asset requests. Uses the `config.assets.prefix` pat
 
 **`config.assets.version`**
 
-Set a custom cache buster string. Changing it will cause all assets to recompile on the next build.
+Set a custom cache buster string. Changing it will cause all assets to recompile on the next build. Changes to `config.assets.prefix` or `config.assets.digest` also invalidate cached asset URLs.
 
 ``` ruby
 config.assets.version = 'v1'
