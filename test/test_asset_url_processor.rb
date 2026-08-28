@@ -62,6 +62,30 @@ class TestAssetUrlProcessor < Minitest::Test
     assert_equal("background: url(/jquery/jquery-#{jquery_digest}.js);", output[:data])
   end
 
+  def test_local_paths_with_scheme_prefixes
+    %w[
+      url(data/icon.png)
+      url(data-icon.png)
+      url(http/icon.png)
+      url(https-icon.png)
+    ].each do |url|
+      assert_match Sprockets::Rails::AssetUrlProcessor::REGEX, url
+    end
+  end
+
+  def test_uri_schemes_are_case_insensitive
+    data = [
+      "background: url(DATA:image/png;base64,abc);",
+      "background: url(HTTP://example.com/logo.png);",
+      "background: url(HtTpS://example.com/logo.png);"
+    ].join("\n")
+    input = { environment: @env, data: data, filename: 'url2.css', metadata: {} }
+
+    output = Sprockets::Rails::AssetUrlProcessor.call(input)
+
+    assert_equal data, output[:data]
+  end
+
   def test_protocol_relative_paths
     input = { environment: @env, data: "background: url(//assets.example.com/assets/fontawesome-webfont-82ff0fe46a6f60e0ab3c4a9891a0ae0a1f7b7e84c625f55358379177a2dcb202.eot);", filename: 'url2.css', metadata: {} }
     output = Sprockets::Rails::AssetUrlProcessor.call(input)
