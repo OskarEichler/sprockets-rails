@@ -90,7 +90,7 @@ Enable asset debugging mode. A source map will be included with each asset when 
 
 **`config.assets.compile`**
 
-Enables Sprockets compile environment. If disabled, `Rails.application.assets` will be `nil` to prevent inadvertent compilation calls. View helpers will depend on assets being precompiled to `public/assets` in order to link to them. Initializers expecting `Rails.application.assets` during boot should be accessing the environment in a `config.assets.configure` block. See below.
+Enables Sprockets compile environment. If disabled, `Rails.application.assets` will be `nil` to prevent inadvertent compilation calls. View helpers will depend on assets being precompiled to `public/assets` in order to link to them. An explicit `nil` environment on a view also disables its environment instead of falling back to the class setting. Initializers expecting `Rails.application.assets` during boot should be accessing the environment in a `config.assets.configure` block. See below.
 
 **`config.assets.configure`**
 
