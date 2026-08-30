@@ -5,11 +5,15 @@ module Sprockets
     class QuietAssets
       def initialize(app)
         @app = app
-        @assets_regex = %r(\A/{0,2}#{::Rails.application.config.assets.prefix})
+        prefix = ::Rails.application.config.assets.prefix.to_s
+        prefix = "/#{prefix}" unless prefix.start_with?('/')
+        @assets_prefix = prefix.chomp('/')
+        @assets_prefix = '/' if @assets_prefix.empty?
       end
 
       def call(env)
-        if env['PATH_INFO'] =~ @assets_regex
+        path = env['PATH_INFO'].to_s
+        if @assets_prefix == '/' || path == @assets_prefix || path.start_with?("#{@assets_prefix}/")
           raise_logger_silence_error unless ::Rails.logger.respond_to?(:silence)
 
           ::Rails.logger.silence { @app.call(env) }
