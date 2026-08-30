@@ -97,9 +97,14 @@ module Sprockets
           end
 
           desc "Remove old compiled assets"
-          task :clean, [:keep] => :environment do |t, args|
+          task :clean, %i[keep age] => :environment do |_task, args|
             with_logger do
-              manifest.clean(Integer(args.keep || self.keep))
+              keep = Integer(args.keep || self.keep)
+              if respond_to?(:age)
+                manifest.clean(keep, Integer(args.age || age))
+              else
+                manifest.clean(keep)
+              end
             end
           end
 
