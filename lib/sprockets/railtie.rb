@@ -76,7 +76,8 @@ module Sprockets
     end
 
     LOOSE_APP_ASSETS = lambda do |logical_path, filename|
-      filename.start_with?(::Rails.root.join("app/assets").to_s) &&
+      app_assets = ::Rails.root.join('app/assets').to_s
+      (filename == app_assets || filename.start_with?("#{app_assets}#{File::SEPARATOR}")) &&
       !['.js', '.css', ''].include?(File.extname(logical_path))
     end
 
