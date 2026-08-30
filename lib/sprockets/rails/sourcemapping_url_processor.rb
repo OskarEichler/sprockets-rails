@@ -2,14 +2,19 @@ module Sprockets
   module Rails
     # Rewrites source mapping urls with the digested paths and protect against semicolon appending with a dummy comment line
     class SourcemappingUrlProcessor
-      REGEX = /\/\/# sourceMappingURL=(.*\.map)/
+      REGEX = /\/\/[#@]\s*sourceMappingURL=(\S+)/
 
       class << self
         def call(input)
           env     = input[:environment]
           context = env.context_class.new(input)
-          data    = input[:data].gsub(REGEX) do |_match|
-            sourcemap_logical_path = combine_sourcemap_logical_path(sourcefile: input[:name], sourcemap: $1)
+          data    = input[:data].gsub(REGEX) do |match|
+            sourcemap = Regexp.last_match(1)
+            next "#{match}\n//!\n" if sourcemap.match?(/\Adata:/i)
+
+            sourcemap_logical_path = combine_sourcemap_logical_path(
+              sourcefile: input[:name], sourcemap: sourcemap
+            )
 
             begin
               resolved_sourcemap_comment(sourcemap_logical_path, context: context)
