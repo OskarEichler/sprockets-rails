@@ -247,10 +247,9 @@ module Sprockets
 
         # List of resolvers in `config.assets.resolve_with` order.
         def asset_resolver_strategies
-          @asset_resolver_strategies ||=
-            Array(resolve_assets_with).map do |name|
-              HelperAssetResolvers[name].new(self)
-            end
+          Array(resolve_assets_with).map do |name|
+            HelperAssetResolvers[name].new(self)
+          end
         end
 
         # Append ?body=1 if debug is on and we're on old Sprockets.
