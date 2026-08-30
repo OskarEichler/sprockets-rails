@@ -14,17 +14,26 @@ module Sprockets
       end
 
       def environment
-        if app
+        if @environment_overridden
+          super
+        elsif app
           # Use initialized app.assets or force build an environment if
           # config.assets.compile is disabled
-          app.assets || Sprockets::Railtie.build_environment(app)
+          @app_environment ||= app.assets || Sprockets::Railtie.build_environment(app)
         else
           super
         end
       end
 
+      def environment=(environment)
+        @environment_overridden = true
+        super
+      end
+
       def output
-        if app
+        if @output_overridden
+          super
+        elsif app
           config = app.config
           File.join(config.paths['public'].first, config.assets.prefix)
         else
@@ -32,20 +41,39 @@ module Sprockets
         end
       end
 
+      def output=(output)
+        @output_overridden = true
+        super
+      end
+
       def assets
-        if app
+        if @assets_overridden
+          super
+        elsif app
           app.config.assets.precompile
         else
           super
         end
       end
 
+      def assets=(assets)
+        @assets_overridden = true
+        super
+      end
+
       def manifest
-        if app
-          Sprockets::Manifest.new(index, output, app.config.assets.manifest)
+        if @manifest_overridden
+          super
+        elsif app
+          @app_manifest ||= Sprockets::Manifest.new(index, output, app.config.assets.manifest)
         else
           super
         end
+      end
+
+      def manifest=(manifest)
+        @manifest_overridden = true
+        super
       end
 
       def define
